@@ -1,0 +1,942 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  color: #172033;
+  background: #f4f7fb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, #eef2ff 0, transparent 28%),
+    #f4f7fb;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    opacity 0.15s ease,
+    background 0.15s ease;
+}
+
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* ================= HEADER ================= */
+
+.header {
+  background: linear-gradient(135deg, #111827, #1f2937);
+  color: white;
+  padding: 25px max(5%, calc((100vw - 1180px) / 2));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.14);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+.header p {
+  margin: 6px 0 0;
+  color: #aeb8ca;
+  font-size: 14px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  color: #dbe4f5;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+/* ================= CONTAINER ================= */
+
+.container {
+  width: min(1180px, 92%);
+  margin: 32px auto;
+}
+
+/* ================= CARDS ================= */
+
+.card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #e8ecf3;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 28px rgba(20, 30, 50, 0.055);
+}
+
+.card h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #172033;
+  letter-spacing: -0.2px;
+}
+
+.card p {
+  color: #687386;
+  margin: 7px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ================= MESSAGE ================= */
+
+.message {
+  background: #eef6ff;
+  border: 1px solid #c8e2fa;
+  color: #17436a;
+  padding: 13px 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(30, 100, 160, 0.05);
+}
+
+.message button {
+  background: transparent;
+  border: none;
+  color: #526273;
+  font-size: 22px;
+  line-height: 1;
+  padding: 2px 5px;
+}
+
+/* ================= SERVICE ================= */
+
+.service-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+
+.service-card > div {
+  flex: 1;
+}
+
+.service-card select {
+  width: min(380px, 100%);
+}
+
+/* ================= INPUTS ================= */
+
+label {
+  display: block;
+  margin: 19px 0 8px;
+  font-weight: 650;
+  font-size: 14px;
+  color: #263246;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d7dde7;
+  border-radius: 10px;
+  outline: none;
+  background: white;
+  color: #172033;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+input::placeholder {
+  color: #9aa3b2;
+}
+
+input:focus,
+select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.11);
+}
+
+/* ================= GRID ================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ================= BUTTONS ================= */
+
+.primary-btn,
+.secondary-btn,
+.success-btn,
+.refresh-btn,
+.cancel-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-weight: 650;
+}
+
+.primary-btn {
+  width: 100%;
+  margin-top: 18px;
+  background: #4f46e5;
+  color: white;
+  box-shadow: 0 5px 14px rgba(79, 70, 229, 0.2);
+}
+
+.primary-btn:not(:disabled):hover {
+  background: #4338ca;
+  box-shadow: 0 7px 17px rgba(79, 70, 229, 0.26);
+}
+
+.secondary-btn {
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.secondary-btn:not(:disabled):hover {
+  background: #e0e7ff;
+}
+
+.success-btn {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.success-btn:not(:disabled):hover {
+  background: #bbf7d0;
+}
+
+.refresh-btn {
+  background: #f1f4f8;
+  color: #27364a;
+}
+
+.refresh-btn:not(:disabled):hover {
+  background: #e7ebf1;
+}
+
+.cancel-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.cancel-btn:not(:disabled):hover {
+  background: #fecaca;
+}
+
+/* ================= SERVING ================= */
+
+.serving-box {
+  margin-top: 22px;
+  padding: 21px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f5f7ff, #f8f9ff);
+  border: 1px solid #e3e7ff;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 112px;
+}
+
+.token {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4f46e5;
+  color: white;
+  border-radius: 16px;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.2);
+}
+
+.serving-box h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.serving-box span,
+.queue-status span {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.6px;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 5px 9px;
+  border-radius: 999px;
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.action-row button {
+  flex: 1;
+}
+
+/* ================= STATS ================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  padding: 22px;
+  border: 1px solid #e8ecf3;
+  border-radius: 16px;
+  box-shadow: 0 7px 22px rgba(20, 30, 50, 0.05);
+}
+
+.stat-card::after {
+  content: "";
+  position: absolute;
+  right: -22px;
+  bottom: -30px;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #f1f3ff;
+}
+
+.stat-card span {
+  position: relative;
+  z-index: 1;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-card strong {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-top: 8px;
+  font-size: 30px;
+  color: #172033;
+}
+
+/* ================= QUEUE ================= */
+
+.queue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.queue-list {
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid #edf0f5;
+  border-radius: 13px;
+}
+
+.queue-item {
+  display: grid;
+  grid-template-columns: 45px 1fr auto auto;
+  gap: 15px;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  border-bottom: 1px solid #edf0f5;
+  transition: background 0.15s ease;
+}
+
+.queue-item:last-child {
+  border-bottom: none;
+}
+
+.queue-item:hover {
+  background: #fafbff;
+}
+
+.queue-position {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #4338ca;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 750;
+}
+
+.customer-info h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #1e293b;
+}
+
+.customer-info p {
+  margin: 5px 0 0;
+  font-size: 13px;
+  color: #7b8494;
+}
+
+.empty {
+  padding: 34px 10px;
+  text-align: center;
+  color: #7b8494;
+  font-size: 14px;
+}
+
+.queue-empty {
+  margin-top: 10px;
+}
+
+/* ================= CUSTOMER TICKET ================= */
+
+.ticket-card {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f7f8ff
+  );
+  border: 2px solid #e0e7ff;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.ticket-header h2 {
+  margin: 0;
+}
+
+.ticket-header p {
+  margin-bottom: 0;
+}
+
+.ticket-status {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #166534;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.ticket-main {
+  margin-top: 22px;
+  padding: 20px;
+  border-radius: 14px;
+  background: #f5f7ff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.big-token {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: #4f46e5;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 28px;
+  font-weight: bold;
+
+  box-shadow: 0 10px 22px rgba(79, 70, 229, 0.22);
+}
+
+.ticket-details h3 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.ticket-details p {
+  margin: 0;
+}
+
+.ticket-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+
+.ticket-stats > div {
+  padding: 18px;
+  background: #f8fafc;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.ticket-stats span {
+  display: block;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.ticket-stats strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 25px;
+  color: #172033;
+}
+
+.ticket-card .action-row {
+  margin-top: 20px;
+}
+
+.ticket-card .refresh-btn,
+.ticket-card .cancel-btn {
+  flex: 1;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+  text-align: center;
+  color: #7b8494;
+  padding: 10px 20px 25px;
+  font-size: 13px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .service-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .service-card select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .header {
+    padding: 22px 5%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .container {
+    width: 94%;
+    margin: 22px auto;
+  }
+
+  .card {
+    padding: 19px;
+    border-radius: 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .queue-header {
+    align-items: flex-start;
+  }
+
+  .queue-item {
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+  }
+
+  .queue-status,
+  .cancel-btn {
+    grid-column: 2;
+  }
+
+  .cancel-btn {
+    width: 100%;
+  }
+
+  .ticket-header {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .ticket-header {
+    flex-direction: column;
+  }
+
+  .ticket-main {
+    gap: 15px;
+  }
+
+  .big-token {
+    width: 72px;
+    height: 72px;
+    font-size: 22px;
+    border-radius: 15px;
+  }
+
+  .ticket-details h3 {
+    font-size: 18px;
+  }
+
+  .ticket-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .header h1 {
+    font-size: 27px;
+  }
+
+  .status {
+    font-size: 12px;
+  }
+
+  .action-row {
+    flex-direction: column;
+  }
+
+  .serving-box {
+    padding: 16px;
+  }
+
+  .token {
+    width: 62px;
+    height: 62px;
+    font-size: 19px;
+  }
+
+  .serving-box h3 {
+    font-size: 17px;
+  }
+
+  .queue-header {
+    flex-direction: column;
+  }
+
+  .refresh-btn {
+    width: 100%;
+  }
+
+  .ticket-card .action-row {
+    flex-direction: column;
+  }
+  /* ================= SERVICE MANAGEMENT ================= */
+
+  .service-management {
+    margin-top: 24px;
+  }
+
+  .primary-small-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 11px 16px;
+    background: #4f46e5;
+    color: white;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+
+  .primary-small-btn:hover {
+    background: #4338ca;
+  }
+
+  .service-form {
+    margin-top: 24px;
+    padding: 22px;
+    border-radius: 14px;
+    background: #f8f9ff;
+    border: 1px solid #e2e6ff;
+  }
+
+  .service-form h3 {
+    margin: 0 0 18px;
+    font-size: 17px;
+  }
+
+  .service-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 18px;
+  }
+
+  .service-form .action-row {
+    margin-top: 18px;
+  }
+
+  .service-form .primary-btn {
+    margin-top: 0;
+  }
+
+  .managed-services {
+    margin-top: 28px;
+  }
+
+  .managed-services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .managed-services-header h3 {
+    margin: 0;
+    font-size: 17px;
+  }
+
+  .service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .managed-service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px;
+    border: 1px solid #e7eaf0;
+    border-radius: 13px;
+    background: white;
+  }
+
+  .managed-service-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .managed-service-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .managed-service-title h3 {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  .managed-service-info p {
+    margin: 6px 0;
+    color: #687386;
+    font-size: 13px;
+  }
+
+  .managed-service-info small {
+    color: #7b8494;
+    font-size: 12px;
+  }
+
+  .active-badge,
+  .inactive-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 750;
+    letter-spacing: 0.5px;
+  }
+
+  .active-badge {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .inactive-badge {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  .managed-service-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .managed-service-actions button {
+    white-space: nowrap;
+  }
+
+  /* ================= SERVICE MANAGEMENT RESPONSIVE ================= */
+
+  @media (max-width: 800px) {
+    .service-form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .managed-service-item {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .managed-service-actions {
+      width: 100%;
+    }
+
+    .managed-service-actions button {
+      flex: 1;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .service-management .queue-header {
+      align-items: stretch;
+    }
+
+    .primary-small-btn {
+      width: 100%;
+    }
+
+    .managed-services-header {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .managed-services-header .refresh-btn {
+      width: 100%;
+    }
+  }
+  /* ================= HEADER MODE SWITCH ================= */
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .mode-switch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 10px;
+    background: #1f2937;
+  }
+
+  .mode-btn {
+    border: none;
+    border-radius: 7px;
+    padding: 8px 13px;
+    background: transparent;
+    color: #cbd5e1;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .mode-btn:hover {
+    background: #374151;
+    color: white;
+  }
+
+  .mode-btn.active {
+    background: white;
+    color: #111827;
+  }
+
+  /* Customer empty ticket */
+
+  .customer-info-card {
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Responsive header */
+
+  @media (max-width: 800px) {
+    .header-actions {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .mode-switch {
+      justify-content: center;
+    }
+
+    .status {
+      justify-content: center;
+    }
+  }
+}
