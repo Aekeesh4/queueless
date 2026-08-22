@@ -68,4 +68,12 @@ public class AuthController {
                 user.getRole()
         );
     }
+    @PutMapping("/reset-password")
+    public String resetPassword(
+            @RequestParam String username,
+            @RequestParam String newPassword
+    ) {
+        authService.resetPassword(username, newPassword);
+        return "Password reset successful";
+    }
 }

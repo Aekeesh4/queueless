@@ -13,6 +13,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+
     public AuthService(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
@@ -55,17 +56,40 @@ public class AuthService {
         User user = userRepository
                 .findByUsername(username)
                 .orElseThrow(() ->
-                        new RuntimeException("Invalid username or password")
+                        new RuntimeException(
+                                "Invalid username or password"
+                        )
                 );
 
         if (!passwordEncoder.matches(
                 password,
                 user.getPassword()
         )) {
-            throw new UnauthorizedException("Invalid username or password");
-
+            throw new UnauthorizedException(
+                    "Invalid username or password"
+            );
         }
 
         return user;
+    }
+
+    // Temporary password reset method for development/testing
+    public void resetPassword(
+            String username,
+            String newPassword
+    ) {
+
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found")
+                );
+
+        String encodedPassword =
+                passwordEncoder.encode(newPassword);
+
+        user.setPassword(encodedPassword);
+
+        userRepository.save(user);
     }
 }

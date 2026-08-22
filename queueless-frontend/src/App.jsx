@@ -1,7 +1,27 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const API = "/api";
+const API = import.meta.env.VITE_API_URL || "/api";
+
+// Add the JWT token to every protected API request.
+const getToken = () => localStorage.getItem("queuelessToken");
+
+const authFetch = async (url, options = {}) => {
+  const token = getToken();
+
+  const headers = {
+    ...(options.headers || {}),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return fetch(url, {
+    ...options,
+    headers,
+  });
+};
 
 function App() {
   const [services, setServices] = useState([]);
@@ -54,6 +74,90 @@ function App() {
   const [viewMode, setViewMode] =
     useState("customer");
 
+  // ================= AUTHENTICATION =================
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("queuelessToken")
+  );
+
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = localStorage.getItem("queuelessUser");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  // ==================================================
+  // AUTHENTICATION
+  // ==================================================
+
+  const login = async (e) => {
+    e.preventDefault();
+
+    if (!username.trim() || !password.trim()) {
+      setMessage("Username and password are required");
+      return;
+    }
+
+    setLoginLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username.trim(),
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("queuelessToken", data.token);
+      localStorage.setItem("queuelessUser", JSON.stringify(data));
+
+      setCurrentUser(data);
+      setIsLoggedIn(true);
+      setUsername("");
+      setPassword("");
+      setMessage(`Welcome ${data.name}`);
+
+      // Customers should land on Customer view; staff can choose either view.
+      setViewMode(data.role === "STAFF" ? "staff" : "customer");
+    } catch (error) {
+      setMessage(error.message || "Login failed");
+    } finally {
+      setLoginLoading(false);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem("queuelessToken");
+    localStorage.removeItem("queuelessUser");
+    setIsLoggedIn(false);
+    setCurrentUser(null);
+    setUsername("");
+    setPassword("");
+    setTicket(null);
+    setPeopleAhead(0);
+    setEstimatedWaitMinutes(0);
+    setQueue([]);
+    setCurrentCustomer(null);
+    setNextWaiting(null);
+    setWaitingCount(0);
+    setViewMode("customer");
+    setMessage("Logged out successfully");
+  };
+
   // ==================================================
   // CUSTOMER TICKET STORAGE
   // ==================================================
@@ -75,7 +179,7 @@ function App() {
 
   const loadServices = async () => {
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/services/active`
       );
 
@@ -123,7 +227,7 @@ function App() {
 
   const loadAllServices = async () => {
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/services`
       );
 
@@ -153,7 +257,7 @@ function App() {
     if (!selectedService) return;
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/queue/${selectedService}`
       );
 
@@ -227,7 +331,7 @@ function App() {
     }
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/queue/ticket/${ticket.id}/position`
       );
 
@@ -260,15 +364,19 @@ function App() {
   // ==================================================
 
   useEffect(() => {
+    if (!isLoggedIn) return;
+
     loadServices();
     loadAllServices();
-  }, []);
+  }, [isLoggedIn]);
 
   // ==================================================
   // RELOAD QUEUE WHEN SERVICE CHANGES
   // ==================================================
 
   useEffect(() => {
+    if (!isLoggedIn) return;
+
     if (selectedService) {
       loadQueue();
     } else {
@@ -284,7 +392,7 @@ function App() {
   // ==================================================
 
   useEffect(() => {
-    if (!ticket?.id) return;
+    if (!isLoggedIn || !ticket?.id) return;
 
     loadTicketPosition();
 
@@ -370,7 +478,7 @@ function App() {
         ? "PUT"
         : "POST";
 
-      const response = await fetch(url, {
+      const response = await authFetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -424,7 +532,7 @@ function App() {
     setMessage("");
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/services/${serviceId}`,
         {
           method: "DELETE",
@@ -469,7 +577,7 @@ function App() {
     setMessage("");
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/services/${service.id}`,
         {
           method: "PUT",
@@ -538,7 +646,7 @@ function App() {
     setMessage("");
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/queue/join?customerName=${encodeURIComponent(
           customerName.trim()
         )}&serviceId=${selectedService}`,
@@ -608,7 +716,7 @@ function App() {
     setMessage("");
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/queue/${selectedService}/next`,
         {
           method: "POST",
@@ -662,7 +770,7 @@ function App() {
     setMessage("");
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/queue/${selectedService}/complete-current`,
         {
           method: "POST",
@@ -705,7 +813,7 @@ function App() {
     setMessage("");
 
     try {
-      const response = await fetch(
+      const response = await authFetch(
         `${API}/queue/ticket/${ticketId}/cancel`,
         {
           method: "PUT",
@@ -770,6 +878,60 @@ function App() {
   // UI
   // ==================================================
 
+  if (!isLoggedIn) {
+    return (
+      <div className="app">
+        <main className="container">
+          <section className="card" style={{ maxWidth: "480px", margin: "80px auto" }}>
+            <div className="section-title">
+              <div>
+                <h2>QueueLess Login</h2>
+                <p>Sign in to access the queue management system.</p>
+              </div>
+            </div>
+
+            {message && (
+              <div className="message">
+                <span>{message}</span>
+                <button type="button" onClick={() => setMessage("")}>
+                  ×
+                </button>
+              </div>
+            )}
+
+            <form onSubmit={login}>
+              <label>Username</label>
+              <input
+                type="text"
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={loginLoading}
+              />
+
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loginLoading}
+              />
+
+              <button
+                className="primary-btn"
+                type="submit"
+                disabled={loginLoading || !username.trim() || !password}
+              >
+                {loginLoading ? "Logging in..." : "Login"}
+              </button>
+            </form>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
 
@@ -802,18 +964,20 @@ function App() {
               Customer
             </button>
 
-            <button
-              className={
-                viewMode === "staff"
-                  ? "mode-btn active"
-                  : "mode-btn"
-              }
-              onClick={() =>
-                setViewMode("staff")
-              }
-            >
-              Staff
-            </button>
+            {currentUser?.role === "STAFF" && (
+              <button
+                className={
+                  viewMode === "staff"
+                    ? "mode-btn active"
+                    : "mode-btn"
+                }
+                onClick={() =>
+                  setViewMode("staff")
+                }
+              >
+                Staff
+              </button>
+            )}
 
           </div>
 
@@ -824,6 +988,20 @@ function App() {
             Backend Connected
 
           </div>
+
+          {currentUser && (
+            <div className="status">
+              {currentUser.name} ({currentUser.role})
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={logout}
+          >
+            Logout
+          </button>
 
         </div>
 
