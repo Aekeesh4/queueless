@@ -9,6 +9,7 @@ export default defineConfig({
       '/api': {
         target: 'https://queueless-8p13.onrender.com',
         changeOrigin: true,
+        secure: true,
       },
     },
   },
