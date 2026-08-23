@@ -92,4 +92,37 @@ public class AuthService {
 
         userRepository.save(user);
     }
+    public User registerStaff(
+            String name,
+            String username,
+            String password
+    ) {
+        try {
+            if (userRepository.existsByUsername(username)) {
+                throw new RuntimeException("Username already exists");
+            }
+
+            String encodedPassword =
+                    passwordEncoder.encode(password);
+
+            User user = new User(
+                    name,
+                    username,
+                    encodedPassword,
+                    Role.STAFF
+            );
+
+            return userRepository.save(user);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(
+                    "STAFF registration failed: "
+                            + e.getClass().getName()
+                            + " - "
+                            + e.getMessage(),
+                    e
+            );
+        }
+    }
 }

@@ -55,11 +55,10 @@ public class AuthController {
             @RequestParam String password
     ) {
 
-        User user = authService.register(
+        User user = authService.registerStaff(
                 name,
                 username,
-                password,
-                Role.STAFF
+                password
         );
 
         return new UserResponse(
