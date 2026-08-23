@@ -46,6 +46,30 @@ public class AuthController {
         );
     }
 
+    // TEMPORARY: use this once to create the staff account.
+    // Remove this endpoint after creating the staff user.
+    @PostMapping("/register-staff")
+    public UserResponse registerStaff(
+            @RequestParam String name,
+            @RequestParam String username,
+            @RequestParam String password
+    ) {
+
+        User user = authService.register(
+                name,
+                username,
+                password,
+                Role.STAFF
+        );
+
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getUsername(),
+                user.getRole()
+        );
+    }
+
     @PostMapping("/login")
     public LoginResponse login(
             @RequestBody LoginRequest request
@@ -68,12 +92,18 @@ public class AuthController {
                 user.getRole()
         );
     }
+
     @PutMapping("/reset-password")
     public String resetPassword(
             @RequestParam String username,
             @RequestParam String newPassword
     ) {
-        authService.resetPassword(username, newPassword);
+
+        authService.resetPassword(
+                username,
+                newPassword
+        );
+
         return "Password reset successful";
     }
 }
